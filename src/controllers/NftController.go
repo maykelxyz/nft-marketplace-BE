@@ -9,14 +9,14 @@ import (
 )
 
 type NftController struct {
-	ENVConfig  config.ENVConfig
-	NftService services.NftServiceInterface
+	envConfig  config.ENVConfig
+	nftService services.NftServiceInterface
 }
 
 func NewNFTController(env config.ENVConfig, nftService services.NftServiceInterface) *NftController {
 	return &NftController{
-		ENVConfig:  env,
-		NftService: nftService,
+		envConfig:  env,
+		nftService: nftService,
 	}
 }
 
@@ -33,5 +33,11 @@ func (o *NftController) BuildRoutes(e *echo.Group) {
 // @Param address path string true "Contract Address"
 func (o *NftController) GetNFTCollection(c echo.Context) error {
 	address := c.Param("address")
-	return c.JSON(http.StatusOK, address)
+	// Validate address
+
+	collection, err := o.nftService.GetNFTCollection(address)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, err.Error())
+	}
+	return c.JSON(http.StatusOK, collection)
 }
