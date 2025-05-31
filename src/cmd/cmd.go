@@ -2,6 +2,8 @@ package cmd
 
 import (
 	"net/http"
+	"nft-marketplace-be/docs"
+	_ "nft-marketplace-be/docs"
 	"nft-marketplace-be/src/config"
 	"nft-marketplace-be/src/controllers"
 	"nft-marketplace-be/src/repository"
@@ -18,6 +20,8 @@ func InitializeServer(cfg config.ENVConfig) {
 	v1 := e.Group("/v1")
 
 	// Initialize Layers
+	docs.SwaggerInfo.Schemes = []string{"http", "https"}
+
 	// Initialize Repository
 	repository := repository.NewRepository(cfg)
 	// Initialize Services

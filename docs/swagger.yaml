@@ -3,5 +3,20 @@ info:
   description: NFT Marketplace backend boilerplate
   title: NFT Marketplace Backend
   version: "1.0"
-paths: {}
+paths:
+  /v1/nfts/{address}:
+    get:
+      description: Get all projects
+      parameters:
+      - description: Contract Address
+        in: path
+        name: address
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses: {}
+      summary: Get all projects
+      tags:
+      - NFT
 swagger: "2.0"
