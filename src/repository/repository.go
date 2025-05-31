@@ -1,7 +1,17 @@
 package repository
 
-import "fmt"
+import (
+	"nft-marketplace-be/src/config"
+)
 
-func Repository() {
-	fmt.Println("Hello, World!")
+type Repository struct {
+	EnvConfig config.ENVConfig
+}
+
+type RepositoryInterface interface{}
+
+func NewRepository(cfg config.ENVConfig) RepositoryInterface {
+	return &Repository{
+		EnvConfig: cfg,
+	}
 }

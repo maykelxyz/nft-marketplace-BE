@@ -1,4 +1,7 @@
 info:
   contact: {}
+  description: NFT Marketplace backend boilerplate
+  title: NFT Marketplace Backend
+  version: "1.0"
 paths: {}
 swagger: "2.0"

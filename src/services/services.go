@@ -1,7 +1,15 @@
 package services
 
-import "fmt"
+import "nft-marketplace-be/src/repository"
 
-func NftServices() {
-	fmt.Println("Hello, World!")
+type NftService struct {
+	dbRepository repository.RepositoryInterface
+}
+type NftServiceInterface interface {
+}
+
+func NewNftService(repository repository.RepositoryInterface) NftServiceInterface {
+	return &NftService{
+		dbRepository: repository,
+	}
 }

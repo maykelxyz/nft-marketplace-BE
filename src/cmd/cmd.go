@@ -3,11 +3,13 @@ package cmd
 import (
 	"net/http"
 	"nft-marketplace-be/src/config"
+	"nft-marketplace-be/src/controllers"
+	"nft-marketplace-be/src/repository"
+	"nft-marketplace-be/src/services"
 
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 	echoSwagger "github.com/swaggo/echo-swagger"
-	"github.com/swaggo/swag/example/basic/docs"
 )
 
 func InitializeServer(cfg config.ENVConfig) {
@@ -15,6 +17,15 @@ func InitializeServer(cfg config.ENVConfig) {
 
 	v1 := e.Group("/v1")
 
+	// Initialize Layers
+	// Initialize Repository
+	repository := repository.NewRepository(cfg)
+	// Initialize Services
+	nftService := services.NewNftService(repository)
+
+	// Initialize Controllers
+	nftController := controllers.NewNFTController(cfg, nftService)
+	nftController.BuildRoutes(v1)
 	v1.GET("/health", func(c echo.Context) error {
 		return c.JSON(http.StatusOK, "OK")
 	})
@@ -26,13 +37,6 @@ func InitializeServer(cfg config.ENVConfig) {
 		AllowOrigins:     []string{"*"},
 		AllowCredentials: true,
 	}))
-
-	// Initialize Swagger
-	docs.SwaggerInfo.Title = "NFT Marketplace API"
-	docs.SwaggerInfo.Description = "This is NFT Marketplace API."
-	docs.SwaggerInfo.Version = "1.0"
-	docs.SwaggerInfo.Host = "localhost:8080"
-	docs.SwaggerInfo.Schemes = []string{"http", "https"}
 
 	// Routes
 	e.GET("/swagger/*", echoSwagger.WrapHandler)

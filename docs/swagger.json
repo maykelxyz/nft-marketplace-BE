@@ -1,7 +1,10 @@
 {
     "swagger": "2.0",
     "info": {
-        "contact": {}
+        "description": "NFT Marketplace backend boilerplate",
+        "title": "NFT Marketplace Backend",
+        "contact": {},
+        "version": "1.0"
     },
     "paths": {}
 }

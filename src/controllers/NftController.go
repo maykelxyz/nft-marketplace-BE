@@ -1,10 +1,22 @@
 package controllers
 
 import (
-	"fmt"
-	"net/http"
+	"nft-marketplace-be/src/config"
+	"nft-marketplace-be/src/services"
+
+	"github.com/labstack/echo/v4"
 )
 
-func NftController(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("Hello, World!")
+type NftController struct {
+	ENVConfig  config.ENVConfig
+	NftService services.NftServiceInterface
 }
+
+func NewNFTController(env config.ENVConfig, nftService services.NftServiceInterface) *NftController {
+	return &NftController{
+		ENVConfig:  env,
+		NftService: nftService,
+	}
+}
+
+func (o *NftController) BuildRoutes(e *echo.Group) {}
