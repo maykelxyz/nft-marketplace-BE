@@ -13,6 +13,11 @@ paths:
         name: address
         required: true
         type: string
+      - description: Blockchain
+        in: header
+        name: blockchain
+        required: true
+        type: string
       produces:
       - application/json
       responses: {}

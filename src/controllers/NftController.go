@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"fmt"
 	"net/http"
 	"nft-marketplace-be/src/config"
 	"nft-marketplace-be/src/services"
@@ -31,8 +32,12 @@ func (o *NftController) BuildRoutes(e *echo.Group) {
 // @Produce json
 // @Router /v1/nfts/{address} [get]
 // @Param address path string true "Contract Address"
+// @Param blockchain header string true "Blockchain"
 func (o *NftController) GetNFTCollection(c echo.Context) error {
 	address := c.Param("address")
+	blockchain := c.Request().Header.Get("blockchain")
+	fmt.Printf("blockchain: %s", blockchain)
+
 	// Validate address
 
 	collection, err := o.nftService.GetNFTCollection(address)

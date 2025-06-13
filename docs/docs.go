@@ -32,6 +32,13 @@ const docTemplate = `{
                         "name": "address",
                         "in": "path",
                         "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Blockchain",
+                        "name": "blockchain",
+                        "in": "header",
+                        "required": true
                     }
                 ],
                 "responses": {}
