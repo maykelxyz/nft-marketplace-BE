@@ -6,7 +6,8 @@ type NftService struct {
 	dbRepository repository.RepositoryInterface
 }
 type NftServiceInterface interface {
-	GetNFTCollection(address string) (bool, error)
+	ListFromAddress(address string) (bool, error)
+	Count(address string) (int, error)
 }
 
 func NewNftService(repository repository.RepositoryInterface) NftServiceInterface {
@@ -15,6 +16,10 @@ func NewNftService(repository repository.RepositoryInterface) NftServiceInterfac
 	}
 }
 
-func (o NftService) GetNFTCollection(address string) (bool, error) {
+func (o NftService) ListFromAddress(address string) (bool, error) {
 	return true, nil
+}
+
+func (o NftService) Count(address string) (int, error) {
+	return 0, nil
 }

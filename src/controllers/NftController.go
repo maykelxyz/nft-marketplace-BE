@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"nft-marketplace-be/src/config"
 	"nft-marketplace-be/src/services"
+	"nft-marketplace-be/src/utils"
 
 	"github.com/labstack/echo/v4"
 )
@@ -23,7 +24,7 @@ func NewNFTController(env config.ENVConfig, nftService services.NftServiceInterf
 
 func (o *NftController) BuildRoutes(e *echo.Group) {
 	nfts := e.Group("/nfts")
-	nfts.GET("/:address", o.GetNFTCollection)
+	nfts.GET("/:address", o.ListFromAddress)
 }
 
 // @Summary Get all projects
@@ -33,16 +34,25 @@ func (o *NftController) BuildRoutes(e *echo.Group) {
 // @Router /v1/nfts/{address} [get]
 // @Param address path string true "Contract Address"
 // @Param blockchain header string true "Blockchain"
-func (o *NftController) GetNFTCollection(c echo.Context) error {
+func (o *NftController) ListFromAddress(c echo.Context) error {
 	address := c.Param("address")
 	blockchain := c.Request().Header.Get("blockchain")
 	fmt.Printf("blockchain: %s", blockchain)
 
 	// Validate address
-
-	collection, err := o.nftService.GetNFTCollection(address)
+	if !utils.ValidateAddress(address) {
+		return c.JSON(http.StatusBadRequest, "Invalid address")
+	}
+	count, err := o.nftService.Count(address)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, err.Error())
 	}
-	return c.JSON(http.StatusOK, collection)
+	list, err := o.nftService.ListFromAddress(address)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, err.Error())
+	}
+	return c.JSON(http.StatusOK, map[string]interface{}{
+		"totalItems": count,
+		"data":       list,
+	})
 }
